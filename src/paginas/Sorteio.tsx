@@ -1,5 +1,5 @@
 // src/paginas/Sorteio.tsx
-import { useState } from "react";
+import React, { useState } from "react";
 import Card from "../componentes/Card";
 import { useListaDeParticipantes } from "../state/hook/useListaDeParticipantes";
 import { useResultadoSorteio } from "../state/hook/useResultadoSorteio";
@@ -11,6 +11,8 @@ const Sorteio = () => {
 
   const [participanteDaVez, setParticipanteDaVez] = useState("");
   const [amigoScreto, setAmigoSecreto] = useState("");
+  // Armazena o id do timeout para limpar depois
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const resultado = useResultadoSorteio();
 
@@ -18,8 +20,23 @@ const Sorteio = () => {
     evento.preventDefault();
     if (resultado.has(participanteDaVez)) {
       setAmigoSecreto(resultado.get(participanteDaVez)!);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setAmigoSecreto("");
+      }, 5000);
     }
   };
+
+  // Limpa o timeout ao desmontar
+  React.useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <Card>
