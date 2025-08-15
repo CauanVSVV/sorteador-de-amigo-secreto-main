@@ -1,7 +1,7 @@
 import { realizarSorteio } from "./realizarSorteio";
 
-describe("Dado um sorteio de amigo srecto", () => {
-  test("cada participante não sortia o próproio nome", () => {
+describe("Dado um sorteio de amigo secreto", () => {
+  test("cada participante não sorteia o próproio nome", () => {
     const participantes = [
       "Ana",
       "Catarina",
